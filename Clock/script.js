@@ -10,19 +10,22 @@ function updateClock() {
   const seconds = now.getUTCSeconds().toString().padStart(2, '0');
   clockEl.textContent = `${hours}:${minutes}:${seconds} UTC`;
 }
+
 setInterval(updateClock, 1000);
 updateClock(); // initial call
 
-// Toggle background
+// Toggle background image vs white background
 toggleBtn.addEventListener('click', () => {
   if (!isImage) {
-    document.body.style.backgroundImage = "url('background.jpg')"; // add an image if you want
-    document.body.style.backgroundColor = "";
-    document.body.style.color = "white";
+    document.body.style.backgroundImage = "url('background.jpg')";
+    document.body.style.backgroundSize = "cover";
+    document.body.style.backgroundPosition = "center";
+    document.body.style.backgroundRepeat = "no-repeat";
+    document.body.style.color = "white"; // text color for image
   } else {
     document.body.style.backgroundImage = "";
     document.body.style.backgroundColor = "white";
-    document.body.style.color = "black";
+    document.body.style.color = "black"; // text color for white background
   }
   isImage = !isImage;
 });
