@@ -1,10 +1,10 @@
 
-// --- DATE ---
-const dateElement = document.getElementById("today-date");
+// --- DATE AS TITLE ---
+const title = document.getElementById("page-title");
 const today = new Date();
 const day = today.toLocaleString('en-US', { day: 'numeric' });
 const month = today.toLocaleString('en-US', { month: 'long' });
-dateElement.textContent = `${day} ${month}`;
+title.textContent = `${day} ${month}`;
 
 // --- BIBLE VERSE ---
 fetch("https://labs.bible.org/api/?passage=random&type=json")
