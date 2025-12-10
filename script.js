@@ -1,13 +1,17 @@
-
-// --- DATE AS TITLE ---
+// --- DATE AS TITLE + TAB TITLE ---
 const title = document.getElementById("page-title");
+const tabTitle = document.getElementById("tab-title");
+
 const today = new Date();
 const day = today.toLocaleString('en-US', { day: 'numeric' });
 const month = today.toLocaleString('en-US', { month: 'long' });
-title.textContent = `${day} ${month}`;
+
+const formatted = `${day} ${month}`;
+title.textContent = formatted;
+tabTitle.textContent = formatted;
 
 // --- BIBLE VERSE ---
-fetch("https://beta.ourmanna.com/api/v1/get/?format=json")
+fetch("https://labs.bible.org/api/?passage=random&type=json")
   .then(res => res.json())
   .then(data => {
     const verse = data[0];
@@ -15,12 +19,17 @@ fetch("https://beta.ourmanna.com/api/v1/get/?format=json")
       `"${verse.text}" — ${verse.bookname} ${verse.chapter}:${verse.verse}`;
   });
 
-// --- DAILY QUOTE ---
-fetch("https://api.quotable.io/random")
+// --- DAILY QUOTE (ZenQuotes, reliable HTTPS) ---
+fetch("https://zenquotes.io/api/today")
   .then(res => res.json())
   .then(data => {
+    const quote = data[0];
     document.getElementById("quote").textContent =
-      `"${data.content}" — ${data.author}`;
+      `"${quote.q}" — ${quote.a}`;
+  })
+  .catch(() => {
+    document.getElementById("quote").textContent =
+      "Quote unavailable today.";
   });
 
 // --- TODAY'S HOLIDAY ---
@@ -35,6 +44,7 @@ fetch(`https://date.nager.at/api/v3/PublicHolidays/${year}/US`)
       const date = new Date(h.date);
       return date.getMonth() + 1 === monthNum && date.getDate() === dayNum;
     });
+
     document.getElementById("event").textContent =
       match ? match.localName : "No major public holiday today.";
   });
