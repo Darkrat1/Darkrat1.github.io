@@ -11,7 +11,7 @@ body {
 }
 
 #clock {
-  font-size: 5em;       /* big clock */
+  font-size: 10em;       /* big clock */
   font-weight: bold;    /* bold text */
   margin-bottom: 30px;  /* space from button */
 }
@@ -21,3 +21,4 @@ button {
   font-size: 1.2em;
   cursor: pointer;
 }
+
