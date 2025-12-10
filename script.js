@@ -11,7 +11,7 @@ title.textContent = formatted;
 tabTitle.textContent = formatted;
 
 // ==========================
-//  DAILY BIBLE VERSE (stable)
+//  DAILY BIBLE VERSE (once per day)
 // ==========================
 const verseKey = "dailyBibleVerse";
 const dateKey = "dailyBibleVerseDate";
@@ -39,7 +39,7 @@ if (localStorage.getItem(dateKey) === todayString) {
 }
 
 // ==========================
-//     DAILY QUOTE
+//     DAILY QUOTE (CORS-safe)
 // ==========================
 fetch("https://api.quotable.io/random")
   .then(res => res.json())
@@ -48,8 +48,7 @@ fetch("https://api.quotable.io/random")
       `"${data.content}" — ${data.author}`;
   })
   .catch(() => {
-    document.getElementById("quote").textContent =
-      "Quote unavailable today.";
+    document.getElementById("quote").textContent = "Quote unavailable today.";
   });
 
 // ==========================
@@ -58,11 +57,11 @@ fetch("https://api.quotable.io/random")
 const monthNum = today.getMonth() + 1;
 const dayNum = today.getDate();
 
-// Use "On This Day" API as fallback
+// Using "On This Day" API (historical events)
 fetch(`https://byabbe.se/on-this-day/${monthNum}/${dayNum}/events.json`)
   .then(res => res.json())
   .then(data => {
-    const event = data.events[0]; // first event
+    const event = data.events[0]; // first historical event
     document.getElementById("event").textContent =
       event ? event.description : "No notable events today.";
   })
