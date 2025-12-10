@@ -39,16 +39,17 @@ if (localStorage.getItem(dateKey) === todayString) {
 }
 
 // ==========================
-//     DAILY QUOTE (CORS-safe)
+// DAILY QUOTE (CORS-safe, no SSL issue)
 // ==========================
-fetch("https://api.quotable.io/random")
+fetch("https://api.adviceslip.com/advice")
   .then(res => res.json())
   .then(data => {
     document.getElementById("quote").textContent =
-      `"${data.content}" — ${data.author}`;
+      `"${data.slip.advice}"`;
   })
   .catch(() => {
-    document.getElementById("quote").textContent = "Quote unavailable, aka, chatgpt can't code";
+    document.getElementById("quote").textContent =
+      "Quote unavailable today.";
   });
 
 // ==========================
