@@ -48,9 +48,8 @@ fetch("https://api.quotable.io/random")
       `"${data.content}" — ${data.author}`;
   })
   .catch(() => {
-    document.getElementById("quote").textContent = "Quote unavailable today.";
+    document.getElementById("quote").textContent = "Quote unavailable, aka, chatgpt can't code";
   });
-
 
 // ==========================
 //     TODAY'S EVENT / HOLIDAY
