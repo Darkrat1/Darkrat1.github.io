@@ -1,11 +1,14 @@
 body {
-  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* vertical center */
+  align-items: center;     /* horizontal center */
+  min-height: 100vh;       /* full viewport height */
   margin: 0;
   padding: 20px;
   text-align: center;
 
-  /* Background image */
-  background-image: url('background.jpg'); /* image file */
+  background-image: url('background.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -13,19 +16,18 @@ body {
   color: white;
 }
 
-h1 {
-  font-size: 3em;
-  margin-bottom: 20px;
-  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-}
-
-.box {
-  background: rgba(0, 0, 0, 0.5); /* semi-transparent box */
-  padding: 20px;
-  margin: 20px auto;
-  border-radius: 10px;
-  max-width: 800px;
+h1, .box h2, .box p {
+  text-align: center; /* center all text */
+  
+  /* White text with bigger black outline */
   color: white;
-  font-weight: bold;
-  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  text-shadow: 
+    -2px -2px 0 #000, 
+     2px -2px 0 #000, 
+    -2px  2px 0 #000, 
+     2px  2px 0 #000,
+    0px  2px 0 #000,
+    0px -2px 0 #000,
+    2px  0px 0 #000,
+   -2px  0px 0 #000;
 }
