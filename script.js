@@ -13,8 +13,6 @@ tabTitle.textContent = formatted;
 // ==========================
 //  DAILY BIBLE VERSE (stable)
 // ==========================
-
-// We save the verse for the whole day using localStorage
 const verseKey = "dailyBibleVerse";
 const dateKey = "dailyBibleVerseDate";
 const todayString = today.toISOString().slice(0, 10); // YYYY-MM-DD
@@ -23,21 +21,16 @@ function setBibleVerse(text) {
   document.getElementById("bible-verse").textContent = text;
 }
 
-// Check if we already have today's verse
 if (localStorage.getItem(dateKey) === todayString) {
   setBibleVerse(localStorage.getItem(verseKey));
 } else {
-  // Fetch a new verse for today
   fetch("https://labs.bible.org/api/?passage=random&type=json")
     .then(res => res.json())
     .then(data => {
       const v = data[0];
       const verseText = `"${v.text}" — ${v.bookname} ${v.chapter}:${v.verse}`;
-
-      // Save it
       localStorage.setItem(verseKey, verseText);
       localStorage.setItem(dateKey, todayString);
-
       setBibleVerse(verseText);
     })
     .catch(() => {
@@ -46,16 +39,13 @@ if (localStorage.getItem(dateKey) === todayString) {
 }
 
 // ==========================
-//     DAILY QUOTE (working)
+//     DAILY QUOTE
 // ==========================
-
-// USING: ZenQuotes JSON — reliable, HTTPS valid
-fetch("https://zenquotes.io/api/today")
+fetch("https://api.quotable.io/random")
   .then(res => res.json())
   .then(data => {
-    const quote = data[0];
     document.getElementById("quote").textContent =
-      `"${quote.q}" — ${quote.a}`;
+      `"${data.content}" — ${data.author}`;
   })
   .catch(() => {
     document.getElementById("quote").textContent =
@@ -63,24 +53,20 @@ fetch("https://zenquotes.io/api/today")
   });
 
 // ==========================
-//     TODAY'S HOLIDAY
+//     TODAY'S EVENT / HOLIDAY
 // ==========================
-
-const year = today.getFullYear();
 const monthNum = today.getMonth() + 1;
 const dayNum = today.getDate();
 
-fetch(`https://date.nager.at/api/v3/PublicHolidays/${year}/US`)
+// Use "On This Day" API as fallback
+fetch(`https://byabbe.se/on-this-day/${monthNum}/${dayNum}/events.json`)
   .then(res => res.json())
-  .then(holidays => {
-    const match = holidays.find(h => {
-      const date = new Date(h.date);
-      return (
-        date.getMonth() + 1 === monthNum &&
-        date.getDate() === dayNum
-      );
-    });
-
+  .then(data => {
+    const event = data.events[0]; // first event
     document.getElementById("event").textContent =
-      match ? match.localName : "No major public holiday today.";
+      event ? event.description : "No notable events today.";
+  })
+  .catch(() => {
+    document.getElementById("event").textContent =
+      "No events available today.";
   });
