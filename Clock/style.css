@@ -1,5 +1,5 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Arial Black', Arial, sans-serif; /* bold font */
   text-align: center;
   min-height: 100vh;
   display: flex;
@@ -8,17 +8,24 @@ body {
   align-items: center;
   margin: 0;
   background-color: white; /* default background */
-  color: black;            /* default text */
+  color: black;            /* text color on white bg */
   transition: background 0.5s, color 0.5s;
 }
 
+h1 {
+  font-size: 3em;
+  margin-bottom: 20px;
+}
+
 #clock {
-  font-size: 4em;
-  margin: 20px;
+  font-size: 5em;   /* bigger clock text */
+  font-weight: bold;
+  margin: 40px 0 20px 0; /* space above and below */
 }
 
 button {
-  padding: 10px 20px;
-  font-size: 1em;
+  padding: 10px 15px;      /* smaller button */
+  font-size: 1.2em;
   cursor: pointer;
+  margin-top: 20px;         /* space from clock */
 }
