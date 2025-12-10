@@ -51,6 +51,7 @@ fetch("https://api.quotable.io/random")
     document.getElementById("quote").textContent = "Quote unavailable today.";
   });
 
+
 // ==========================
 //     TODAY'S EVENT / HOLIDAY
 // ==========================
