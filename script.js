@@ -7,7 +7,7 @@ const month = today.toLocaleString('en-US', { month: 'long' });
 title.textContent = `${day} ${month}`;
 
 // --- BIBLE VERSE ---
-fetch("https://labs.bible.org/api/?passage=random&type=json")
+fetch("https://beta.ourmanna.com/api/v1/get/?format=json")
   .then(res => res.json())
   .then(data => {
     const verse = data[0];
