@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>INSPECT</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    /* Big, centered "INSPECT" */
+    html,body {
+      height: 100%;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: #111;              /* dark background so white stands out */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+    }
+
+    .big {
+      font-weight: 900;
+      font-size: clamp(48px, 18vw, 200px);
+      letter-spacing: 0.08em;
+      text-align: center;
+      text-transform: uppercase;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    /* visually hide the many secret blocks but keep them in DOM */
+    .secret {
+      display: none !important;
+      white-space: pre-wrap;
+      font-family: monospace;
+      font-size: 12px;
+    }
+
+    /* small helper text so users know what to do */
+    .hint {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 14px;
+      opacity: .6;
+    }
+  </style>
+</head>
+<body>
+  <div class="big">INSPECT CONSOLE</div>
+  <div class="hint">Join vc 3 on the unity smp discord server</div>
+
+  <!-- Many HTML comments containing the message (visible in Elements panel) -->
+  <!-- I lied... VkMtMyBpcyB3cm9uZywgam9pbiAgQ3JlYXRvciBDaGFubmVsIGFuZCBjaGFuZ2UgeW91ciB2b2ljZSBjaGFubmVsIG5hbWUgdG8gIldJTk5FUiI= -->
+  <!-- I lied... VkMtMyBpcyB3cm9uZywgam9pbiAgQ3JlYXRvciBDaGFubmVsIGFuZCBjaGFuZ2UgeW91ciB2b2ljZSBjaGFubmVsIG5hbWUgdG8gIldJTk5FUiI= -->
+  <!-- (repeat many times) -->
+  <!-- ... -->
+  
+  <!-- Hidden pre blocks so they show as nodes in Elements panel when expanded -->
+  <div class="secret" id="secret-blocks">
+    <!-- secret block 1 -->
+    I lied... VkMtMyBpcyB3cm9uZywgam9pbiAgQ3JlYXRvciBDaGFubmVsIGFuZCBjaGFuZ2UgeW91ciB2b2ljZSBjaGFubmVsIG5hbWUgdG8gIldJTk5FUiI=
+  </div>
+
+  <script>
+    // The message you requested (base64 string kept intact)
+    const MSG = 'I lied... VkMtMyBpcyB3cm9uZywgam9pbiAgQ3JlYXRvciBDaGFubmVsIGFuZCBjaGFuZ2UgeW91ciB2b2ljZSBjaGFubmVsIG5hbWUgdG8gIldJTk5FUiI=';
+
+    // 1) Insert many HTML comments into the DOM (so they appear in Elements panel)
+    (function insertComments(count) {
+      try {
+        const root = document.documentElement;
+        for (let i = 0; i < count; i++) {
+          // Create a comment node and append to <html> so it's visible in Elements
+          const c = document.createComment(MSG + '  // comment ' + (i+1));
+          // append near the end so it's easy to find
+          root.appendChild(c);
+        }
+      } catch (e) {
+        // some CSPs may block; that's fine
+      }
+    })(80); // add 80 comment lines
+
+    // 2) Add many hidden <pre> nodes (as child nodes); they appear in Elements panel
+    (function addHiddenNodes(count) {
+      const container = document.getElementById('secret-blocks');
+      for (let i = 0; i < count; i++) {
+        const p = document.createElement('pre');
+        p.className = 'secret';
+        p.textContent = MSG + '\n'; // one line each
+        container.parentNode.appendChild(p);
+      }
+    })(50); // add 50 hidden pre blocks
+
+    // 3) Flood the Console with lots of lines — visible in Console tab
+    (function floodConsole(lines) {
+      // Print grouped messages to make them easy to spot
+      console.groupCollapsed('🔍 Hidden message dump (click to expand)');
+      for (let i = 0; i < lines; i++) {
+        console.log('%c' + MSG, 'color: #ff6; background: #000; font-weight: bold;');
+      }
+      console.groupEnd();
+    })(120); // print 120 console lines
+
+    // 4) Optional: print a few decoded lines (Base64 -> readable), if you want that too:
+    // decode base64 safely (some browsers support atob)
+    try {
+      if (typeof atob === 'function') {
+        const b64part = MSG.split(' ').slice(2).join(' '); // the base64 portion in that string
+        // only attempt if it looks like base64
+        if (/^[A-Za-z0-9+/=]+$/.test(b64part.replace(/\s/g, ''))) {
+          const decoded = atob(b64part);
+          console.groupCollapsed('🔓 Decoded message (base64)');
+          for (let i = 0; i < 20; i++) {
+            console.log(decoded);
+          }
+          console.groupEnd();
+        }
+      }
+    } catch (e) {
+      // ignore
+    }
+  </script>
+</body>
+</html>
