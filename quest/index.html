@@ -60,20 +60,20 @@ with nowhere firm to go.
 </div>
 
   <!-- Many HTML comments containing the message (visible in Elements panel) -->
-  <!-- I lied... VkMtMyBpcyB3cm9uZywgam9pbiAgQ3JlYXRvciBDaGFubmVsIGFuZCBjaGFuZ2UgeW91ciB2b2ljZSBjaGFubmVsIG5hbWUgdG8gIldJTk5FUiI= -->
-  <!-- I lied... VkMtMyBpcyB3cm9uZywgam9pbiAgQ3JlYXRvciBDaGFubmVsIGFuZCBjaGFuZ2UgeW91ciB2b2ljZSBjaGFubmVsIG5hbWUgdG8gIldJTk5FUiI= -->
+  <!-- I lied... V2VsbCBkb25lISAgWW91IGZvdW5kIG1lLiAgTm93IHlvdSBoYXZlIHRvIG1ha2UgYSB2b2ljZSBjaGFubmVsLCBub25lIG9mIHRoZSBleGlzdGluZyBvbmVzIGFyZSBjb3JyZWN0Lg== -->
+  <!-- I lied... V2VsbCBkb25lISAgWW91IGZvdW5kIG1lLiAgTm93IHlvdSBoYXZlIHRvIG1ha2UgYSB2b2ljZSBjaGFubmVsLCBub25lIG9mIHRoZSBleGlzdGluZyBvbmVzIGFyZSBjb3JyZWN0Lg== -->
   <!-- (repeat many times) -->
   <!-- ... -->
   
   <!-- Hidden pre blocks so they show as nodes in Elements panel when expanded -->
   <div class="secret" id="secret-blocks">
     <!-- secret block 1 -->
-    I lied... VkMtMyBpcyB3cm9uZywgam9pbiAgQ3JlYXRvciBDaGFubmVsIGFuZCBjaGFuZ2UgeW91ciB2b2ljZSBjaGFubmVsIG5hbWUgdG8gIldJTk5FUiI=
+    I lied... V2VsbCBkb25lISAgWW91IGZvdW5kIG1lLiAgTm93IHlvdSBoYXZlIHRvIG1ha2UgYSB2b2ljZSBjaGFubmVsLCBub25lIG9mIHRoZSBleGlzdGluZyBvbmVzIGFyZSBjb3JyZWN0Lg==
   </div>
 
   <script>
     // The message you requested (base64 string kept intact)
-    const MSG = 'I lied... VkMtMyBpcyB3cm9uZywgam9pbiAgQ3JlYXRvciBDaGFubmVsIGFuZCBjaGFuZ2UgeW91ciB2b2ljZSBjaGFubmVsIG5hbWUgdG8gIldJTk5FUiI=';
+    const MSG = 'I lied... V2VsbCBkb25lISAgWW91IGZvdW5kIG1lLiAgTm93IHlvdSBoYXZlIHRvIG1ha2UgYSB2b2ljZSBjaGFubmVsLCBub25lIG9mIHRoZSBleGlzdGluZyBvbmVzIGFyZSBjb3JyZWN0Lg==';
 
     // 1) Insert many HTML comments into the DOM (so they appear in Elements panel)
     (function insertComments(count) {
@@ -121,7 +121,6 @@ with nowhere firm to go.
           const decoded = atob(b64part);
           console.groupCollapsed('🔓 Decoded message (base64)');
           for (let i = 0; i < 20; i++) {
-            console.log(decoded);
           }
           console.groupEnd();
         }
@@ -132,4 +131,5 @@ with nowhere firm to go.
   </script>
 </body>
 </html>
+
 
