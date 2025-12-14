@@ -1,5 +1,5 @@
 const FIREBASE_URL =
-  "https://pc-monitor-12345a-default-rtdb.firebaseio.com/pc.json";
+  "https://pc-monitor-9576b-default-rtdb.firebaseio.com/pc.json";
 
 function updateStatus() {
   fetch(FIREBASE_URL)
@@ -32,3 +32,4 @@ function showOffline() {
 
 updateStatus();
 setInterval(updateStatus, 10000);
+
