@@ -1,6 +1,6 @@
 const clockEl = document.getElementById('clock');
 const toggleBtn = document.getElementById('toggle-bg');
-let isImage = false;
+let isWinter = false;
 
 // Update UTC clock every second
 function updateClock() {
@@ -14,18 +14,12 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 
-// Toggle background image vs white
+// Toggle background: white ↔ winter gradient
 toggleBtn.addEventListener('click', () => {
-  if (!isImage) {
-    document.body.style.backgroundImage = "url('background.jpg')";
-    document.body.style.backgroundSize = "cover";
-    document.body.style.backgroundPosition = "center";
-    document.body.style.backgroundRepeat = "no-repeat";
-    document.body.style.color = "white"; // optional: text color for image
+  if (!isWinter) {
+    document.body.classList.add("winter");
   } else {
-    document.body.style.backgroundImage = "";
-    document.body.style.backgroundColor = "white";
-    document.body.style.color = "black";
+    document.body.classList.remove("winter");
   }
-  isImage = !isImage;
+  isWinter = !isWinter;
 });
