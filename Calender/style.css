@@ -1,31 +1,49 @@
+/* ===== GLOBAL ===== */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
-  padding: 20px;
+  padding: 30px;
   text-align: center;
+  color: #eaeaea;
 
-  /* Background image */
-  background-image: url('background.jpg'); /* your image file */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  color: white;
+  /* Winter gradient background */
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  min-height: 100vh;
 }
 
+/* ===== TITLE ===== */
 h1 {
   font-size: 3em;
-  margin-bottom: 20px;
-  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  margin-bottom: 30px;
+  letter-spacing: 1px;
 }
 
+/* ===== GLASS BOXES ===== */
 .box {
-  background: rgba(0, 0, 0, 0.5); /* semi-transparent box */
-  padding: 20px;
-  margin: 20px auto;
-  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  border-radius: 16px;
+  padding: 25px;
+  margin: 25px auto;
   max-width: 800px;
-  color: white;
-  font-weight: bold;
-  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+}
+
+/* ===== BOX HEADERS ===== */
+.box h2 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 1.5em;
+  color: #ffffff;
+}
+
+/* ===== BOX TEXT ===== */
+.box p {
+  font-size: 1.1em;
+  line-height: 1.6;
+  color: #e0e0e0;
 }
