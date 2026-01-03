@@ -7,11 +7,19 @@ const modeBtn = document.getElementById("mode-btn");
 // Alarm setup
 const alarm = new Audio("alarm.mp3");
 alarm.preload = "auto";
-alarm.loop = true; // 🔁 LOOP ALARM
 
 let mode = "timer"; // "timer" or "stopwatch"
 let interval = null;
 let timeMs = 5 * 60 * 1000; // default 5 minutes
+let alarmPlaying = false;
+
+// 🔁 Manual loop (browser-safe)
+alarm.addEventListener("ended", () => {
+  if (alarmPlaying) {
+    alarm.currentTime = 0;
+    alarm.play();
+  }
+});
 
 // --------------------
 // Utility functions
@@ -60,8 +68,9 @@ startBtn.onclick = () => {
         clearInterval(interval);
         interval = null;
 
+        alarmPlaying = true;
         alarm.currentTime = 0;
-        alarm.play(); // 🔔 LOOPING ALARM
+        alarm.play(); // 🔔 START LOOP
         return;
       }
     } else {
@@ -73,12 +82,13 @@ startBtn.onclick = () => {
 };
 
 // --------------------
-// Pause (stops alarm too)
+// Pause (stops alarm)
 // --------------------
 pauseBtn.onclick = () => {
   clearInterval(interval);
   interval = null;
 
+  alarmPlaying = false;
   alarm.pause();
   alarm.currentTime = 0;
 };
@@ -90,6 +100,7 @@ resetBtn.onclick = () => {
   clearInterval(interval);
   interval = null;
 
+  alarmPlaying = false;
   alarm.pause();
   alarm.currentTime = 0;
 
@@ -104,6 +115,7 @@ modeBtn.onclick = () => {
   clearInterval(interval);
   interval = null;
 
+  alarmPlaying = false;
   alarm.pause();
   alarm.currentTime = 0;
 
