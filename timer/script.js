@@ -13,12 +13,16 @@ let interval = null;
 let timeMs = 5 * 60 * 1000; // default 5 minutes
 let alarmPlaying = false;
 
-// 🔁 Manual loop (browser-safe)
+// 🔁 Manual loop with 200ms delay
 alarm.addEventListener("ended", () => {
-  if (alarmPlaying) {
-    alarm.currentTime = 0;
-    alarm.play();
-  }
+  if (!alarmPlaying) return;
+
+  setTimeout(() => {
+    if (alarmPlaying) {
+      alarm.currentTime = 0;
+      alarm.play();
+    }
+  }, 200);
 });
 
 // --------------------
@@ -70,7 +74,7 @@ startBtn.onclick = () => {
 
         alarmPlaying = true;
         alarm.currentTime = 0;
-        alarm.play(); // 🔔 START LOOP
+        alarm.play(); // 🔔 start alarm
         return;
       }
     } else {
