@@ -4,11 +4,16 @@ const pauseBtn = document.getElementById("pause");
 const resetBtn = document.getElementById("reset");
 const modeBtn = document.getElementById("mode-btn");
 
-let mode = "timer"; // timer | stopwatch
+const alarm = new Audio("alarm.mp3");
+alarm.preload = "auto";
+
+let mode = "timer"; // "timer" or "stopwatch"
 let interval = null;
 let timeMs = 5 * 60 * 1000; // default 5 minutes
 
-// Parse HH:MM:SS
+// --------------------
+// Utility functions
+// --------------------
 function parseTime(text) {
   const parts = text.split(":").map(Number);
   if (parts.length !== 3 || parts.some(isNaN)) return null;
@@ -23,7 +28,9 @@ function formatTime(ms) {
   return `${h}:${m}:${s}`;
 }
 
-// Update time from editable text
+// --------------------
+// Editable time input
+// --------------------
 timeEl.addEventListener("blur", () => {
   const parsed = parseTime(timeEl.textContent.trim());
   if (parsed !== null) {
@@ -34,43 +41,66 @@ timeEl.addEventListener("blur", () => {
   }
 });
 
+// --------------------
 // Start
+// --------------------
 startBtn.onclick = () => {
   if (interval) return;
 
   interval = setInterval(() => {
     if (mode === "timer") {
       timeMs -= 1000;
+
       if (timeMs <= 0) {
         timeMs = 0;
+        timeEl.textContent = formatTime(timeMs);
+
         clearInterval(interval);
         interval = null;
+
+        alarm.currentTime = 0;
+        alarm.play(); // 🔔 alarm
+        return;
       }
     } else {
       timeMs += 1000;
     }
+
     timeEl.textContent = formatTime(timeMs);
   }, 1000);
 };
 
+// --------------------
 // Pause
+// --------------------
 pauseBtn.onclick = () => {
   clearInterval(interval);
   interval = null;
 };
 
+// --------------------
 // Reset
+// --------------------
 resetBtn.onclick = () => {
   clearInterval(interval);
   interval = null;
+
+  alarm.pause();
+  alarm.currentTime = 0;
+
   timeMs = mode === "timer" ? 5 * 60 * 1000 : 0;
   timeEl.textContent = formatTime(timeMs);
 };
 
-// Switch mode
+// --------------------
+// Mode toggle
+// --------------------
 modeBtn.onclick = () => {
   clearInterval(interval);
   interval = null;
+
+  alarm.pause();
+  alarm.currentTime = 0;
 
   if (mode === "timer") {
     mode = "stopwatch";
