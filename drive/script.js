@@ -53,6 +53,21 @@ async function loadFiles(path) {
     });
 }
 
+function forceDownload(url, filename) {
+    fetch(url)
+        .then(res => res.blob())
+        .then(blob => {
+            const blobUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = blobUrl;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(blobUrl);
+        });
+}
+
 function handleFile(file) {
     const imageTypes = ["png", "jpg", "jpeg", "gif", "webp"];
     const ext = file.name.split(".").pop().toLowerCase();
@@ -62,18 +77,13 @@ function handleFile(file) {
         previewImage.src = file.download_url;
 
         downloadBtn.onclick = () => {
-            const a = document.createElement("a");
-            a.href = file.download_url;
-            a.download = file.name;
-            a.click();
+            forceDownload(file.download_url, file.name);
         };
     } else {
-        const a = document.createElement("a");
-        a.href = file.download_url;
-        a.download = file.name;
-        a.click();
+        forceDownload(file.download_url, file.name);
     }
 }
+
 
 
 async function downloadFolder(path) {
@@ -103,5 +113,6 @@ async function addFolderToZip(zip, path) {
 
 loadSidebar();
 loadFiles(BASE_FOLDER);
+
 
 
