@@ -55,7 +55,6 @@ async function loadFiles(path) {
 
 function handleFile(file) {
     const imageTypes = ["png", "jpg", "jpeg", "gif", "webp"];
-
     const ext = file.name.split(".").pop().toLowerCase();
 
     if (imageTypes.includes(ext)) {
@@ -63,12 +62,19 @@ function handleFile(file) {
         previewImage.src = file.download_url;
 
         downloadBtn.onclick = () => {
-            window.open(file.download_url);
+            const a = document.createElement("a");
+            a.href = file.download_url;
+            a.download = file.name;
+            a.click();
         };
     } else {
-        window.open(file.download_url);
+        const a = document.createElement("a");
+        a.href = file.download_url;
+        a.download = file.name;
+        a.click();
     }
 }
+
 
 async function downloadFolder(path) {
     const zip = new JSZip();
@@ -97,3 +103,4 @@ async function addFolderToZip(zip, path) {
 
 loadSidebar();
 loadFiles(BASE_FOLDER);
+
