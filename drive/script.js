@@ -1,5 +1,5 @@
-const USER = "darkrat1";
-const REPO = "darkrat1.github.io";
+const USER = "Darkrat1";
+const REPO = "Darkrat1.github.io";
 const BASE_FOLDER = "storage";
 
 const sidebar = document.getElementById("sidebar");
@@ -103,4 +103,5 @@ async function addFolderToZip(zip, path) {
 
 loadSidebar();
 loadFiles(BASE_FOLDER);
+
 
