@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -10,25 +11,34 @@
 
 body {
     margin:0;
-    background:black;
+    background:transparent; /* OBS Transparency */
     overflow:hidden;
     font-family:Arial, Helvetica, sans-serif;
 }
 
-/* Starting Soon Text */
+/* STARTING TEXT */
 
 .starting {
+
     position:absolute;
+
     top:50%;
     left:50%;
+
     transform:translate(-50%,-50%);
-    color:white;
+
+    color:#6fd3ff; /* Light blue */
+
     font-size:70px;
+
     letter-spacing:6px;
+
     text-shadow:
-        0 0 10px white,
-        0 0 30px white;
+        0 0 10px #6fd3ff,
+        0 0 40px #6fd3ff;
+
     animation:pulse 2s infinite;
+
 }
 
 @keyframes pulse {
@@ -38,10 +48,13 @@ body {
 }
 
 
-/* DVD Logo */
+
+/* DVD */
 
 #dvd {
+
     position:absolute;
+
     width:160px;
     height:80px;
 
@@ -58,10 +71,11 @@ body {
     color:white;
 
     user-select:none;
+
 }
 
-.cornerFlash {
-    animation:flash 0.3s;
+.cornerFlash{
+    animation:flash 0.4s;
 }
 
 @keyframes flash {
@@ -70,78 +84,133 @@ body {
 }
 
 </style>
+
 </head>
 
 <body>
 
-<div id="dvd">DVD</div>
+
+<div id="dvd">
+DVD
+</div>
+
 
 <div class="starting">
 STARTING SOON
 </div>
 
+
 <script>
 
 let dvd = document.getElementById("dvd");
 
-let x = 100;
-let y = 100;
+let logoW = 160;
+let logoH = 80;
 
-let dx = 3;
-let dy = 3;
+let screenW = window.innerWidth;
+let screenH = window.innerHeight;
 
-function randomColor() {
+/*
+Goal:
 
+Perfect corner hit after 150 seconds
+*/
+
+let targetTime = 150000; // 2m30s
+
+let startTime = Date.now();
+
+let targetX = screenW - logoW;
+let targetY = screenH - logoH;
+
+/*
+Start top-left and calculate speed needed
+*/
+
+let x = 0;
+let y = 0;
+
+let dx = targetX / (targetTime/16);
+let dy = targetY / (targetTime/16);
+
+
+function randomColor(){
     return "hsl(" + Math.random()*360 + ",100%,60%)";
-
 }
 
-function animate() {
 
-    let w = window.innerWidth;
-    let h = window.innerHeight;
+function animate(){
 
-    let logoW = dvd.offsetWidth;
-    let logoH = dvd.offsetHeight;
+    let now = Date.now();
+
+    let elapsed = now - startTime;
+
+    /*
+    Normal movement
+    */
 
     x += dx;
     y += dy;
 
-    let hitCorner = false;
+    /*
+    Check for target corner time
+    */
 
-    if (x <= 0 || x + logoW >= w) {
-        dx *= -1;
-        hitCorner = true;
-    }
+    if(elapsed >= targetTime){
 
-    if (y <= 0 || y + logoH >= h) {
-        dy *= -1;
-        hitCorner = true;
-    }
-
-    if(hitCorner){
+        x = targetX;
+        y = targetY;
 
         dvd.style.borderColor = randomColor();
         dvd.style.color = randomColor();
 
         dvd.classList.add("cornerFlash");
 
-        setTimeout(()=>{
-            dvd.classList.remove("cornerFlash");
-        },300);
+        dx *= -1;
+        dy *= -1;
+
+        startTime = Infinity;
 
     }
 
+
+    /*
+    Normal bouncing after that
+    */
+
+    if(x <= 0 || x + logoW >= screenW){
+
+        dx *= -1;
+
+        dvd.style.borderColor = randomColor();
+        dvd.style.color = randomColor();
+
+    }
+
+    if(y <= 0 || y + logoH >= screenH){
+
+        dy *= -1;
+
+        dvd.style.borderColor = randomColor();
+        dvd.style.color = randomColor();
+
+    }
+
+
     dvd.style.left = x + "px";
     dvd.style.top = y + "px";
+
 
     requestAnimationFrame(animate);
 
 }
 
+
 animate();
 
+
 </script>
+
 
 </body>
 </html>
