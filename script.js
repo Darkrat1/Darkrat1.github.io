@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 
-  const name = "JAQLIV";
+  const name = "DarkRat1";
   let nameText = '';
   let nameIndex = 0;
   let isNameDeleting = false;
@@ -670,4 +670,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   typeWriterStart();
+
 });
