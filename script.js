@@ -236,8 +236,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   const bioMessages = [
-    "I like to code in c# and make websites like these!",
-    "I found out that chatgpt is bad at coding.",
+    "Jack, please shut up",
+    "Jack, shut up",
     "A bool means it stores text, right?",
     "I play gorilla tag, every month."
   ];
