@@ -236,10 +236,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   const bioMessages = [
-    "Jack, please shut up",
-    "Jack, shut up",
+    "I code in c#",
+    "Chatgpt and Claude made me websites, except from this current one",
     "A bool means it stores text, right?",
-    "I play gorilla tag, every month."
+    "I play gorilla tag, like once a month."
   ];
   let bioText = '';
   let bioIndex = 0;
