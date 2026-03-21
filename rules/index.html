@@ -3,21 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DarkRat1 — Fan Code of Conduct</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <title>darkrat1 — Lobby Rules</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0a0a0a;
-      --surface: #111111;
-      --border: #1e1e1e;
-      --accent: #3b8eff;
-      --accent-dim: rgba(59, 142, 255, 0.10);
-      --text: #e8e8e8;
-      --muted: #666;
-      --number: #1e1e1e;
+      --bg: #04080f;
+      --surface: #080f1c;
+      --border: #0f2040;
+      --accent: #3b82f6;
+      --accent-bright: #60a5fa;
+      --accent-glow: rgba(59, 130, 246, 0.08);
+      --accent2: #f87171;
+      --text: #e8f0fe;
+      --muted: #3a5070;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
 
     body {
       background: var(--bg);
@@ -28,256 +31,456 @@
       overflow-x: hidden;
     }
 
-    /* Subtle noise texture overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      top: -20%;
+      left: -10%;
+      width: 70%;
+      height: 80%;
+      background: radial-gradient(ellipse at center, rgba(37, 99, 235, 0.07) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
     body::before {
       content: '';
       position: fixed;
       inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
       pointer-events: none;
-      z-index: 0;
-      opacity: 0.4;
+      z-index: 999;
+      opacity: 0.5;
     }
 
-    .page {
-      position: relative;
-      z-index: 1;
-      max-width: 780px;
-      margin: 0 auto;
-      padding: 80px 24px 120px;
-    }
-
-    /* Header */
-    header {
-      margin-bottom: 64px;
-      animation: fadeUp 0.6s ease both;
-    }
-
-    .tag {
-      display: inline-block;
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--accent);
-      border: 1px solid var(--accent);
-      padding: 4px 10px;
-      margin-bottom: 20px;
-    }
-
-    h1 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(52px, 10vw, 96px);
-      line-height: 0.92;
-      letter-spacing: 0.02em;
-      color: var(--text);
-      margin-bottom: 20px;
-    }
-
-    h1 span {
-      color: var(--accent);
-    }
-
-    .subtitle {
-      font-size: 15px;
-      color: var(--muted);
-      line-height: 1.7;
-      max-width: 480px;
-    }
-
-    /* Rules list */
-    .rules {
+    /* HERO */
+    .hero {
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      gap: 2px;
-    }
-
-    .rule {
+      justify-content: center;
+      align-items: flex-start;
+      padding: 80px 8vw;
       position: relative;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      padding: 28px 32px 28px 80px;
-      cursor: default;
-      transition: border-color 0.2s, background 0.2s;
-      animation: fadeUp 0.5s ease both;
+      border-bottom: 1px solid var(--border);
+      z-index: 1;
     }
 
-    .rule:nth-child(1) { animation-delay: 0.08s; }
-    .rule:nth-child(2) { animation-delay: 0.14s; }
-    .rule:nth-child(3) { animation-delay: 0.20s; }
-    .rule:nth-child(4) { animation-delay: 0.26s; }
-    .rule:nth-child(5) { animation-delay: 0.32s; }
-
-    .rule:hover {
-      border-color: var(--accent);
-      background: #131313;
+    .hero-tag {
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent-bright);
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp 0.6s ease 0.2s forwards;
     }
 
-    .rule:hover .rule-number {
-      color: var(--accent);
-    }
-
-    .rule-number {
-      position: absolute;
-      left: 28px;
-      top: 28px;
+    .hero h1 {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 36px;
-      color: #2a2a2a;
+      font-size: clamp(72px, 14vw, 160px);
+      line-height: 0.9;
+      letter-spacing: 0.02em;
+      color: var(--text);
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.4s forwards;
+    }
+
+    .hero h1 span {
+      color: var(--accent);
+      display: block;
+      text-shadow: 0 0 60px rgba(59, 130, 246, 0.35);
+    }
+
+    .hero-sub {
+      margin-top: 32px;
+      max-width: 460px;
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--muted);
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.6s forwards;
+    }
+
+    .hero-line {
+      position: absolute;
+      bottom: 40px;
+      right: 8vw;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      opacity: 0;
+      animation: fadeUp 0.6s ease 1s forwards;
+    }
+
+    .hero-line::before {
+      content: '';
+      width: 40px;
+      height: 1px;
+      background: var(--muted);
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 40px;
+      left: 8vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      animation: fadeUp 0.6s ease 1.2s forwards;
+    }
+
+    .scroll-hint span {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .scroll-arrow {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+      animation: scrollPulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.2); }
+    }
+
+    /* RULES SECTION */
+    .rules-section {
+      padding: 100px 8vw 60px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 60px;
+    }
+
+    /* Base state: hidden, ready to animate from below */
+    .rule, .credits {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+                  transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* Animate IN from below (scrolling down) */
+    .rule.in, .credits.in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Animate OUT downward (scrolling back up past it) */
+    .rule.out-down, .credits.out-down {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+
+    /* Animate OUT upward (element exits top edge) */
+    .rule.out-up, .credits.out-up {
+      opacity: 0;
+      transform: translateY(-40px);
+    }
+
+    /* RULE CARD */
+    .rule {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 0 32px;
+      padding: 40px 0;
+      border-top: 1px solid var(--border);
+      position: relative;
+    }
+
+    .rule:last-of-type {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .rule-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 52px;
+      color: var(--border);
       line-height: 1;
-      transition: color 0.2s;
-      user-select: none;
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+      padding-top: 4px;
+    }
+
+    .rule:hover .rule-num {
+      color: var(--accent);
+      text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
     }
 
     .rule-title {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 22px;
-      letter-spacing: 0.05em;
+      font-size: clamp(28px, 4vw, 42px);
+      letter-spacing: 0.04em;
+      line-height: 1;
       color: var(--text);
-      margin-bottom: 10px;
+      margin-bottom: 16px;
     }
 
-    .rule-body {
-      font-size: 14px;
-      color: #999;
-      line-height: 1.75;
+    .rule-text {
+      font-size: 15px;
+      line-height: 1.8;
+      color: #4a6a90;
+      max-width: 580px;
     }
 
-    .rule-body em {
-      color: #bbb;
-      font-style: normal;
+    .rule-text .highlight {
+      color: var(--accent-bright);
       font-weight: 500;
     }
 
-    /* Special last rule */
-    .rule.highlight {
-      border-color: var(--accent);
-      background: var(--accent-dim);
+    .rule-text .warning {
+      color: var(--accent2);
+      font-weight: 500;
     }
 
-    .rule.highlight .rule-number {
-      color: rgba(230, 57, 70, 0.3);
+    .rule-accent-bar {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 3px;
+      height: 0;
+      background: linear-gradient(to bottom, var(--accent), var(--accent-bright));
+      box-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
+      transition: height 0.5s ease 0.2s;
     }
 
-    .rule.highlight .rule-title {
-      color: var(--accent);
+    .rule.in .rule-accent-bar {
+      height: 100%;
     }
 
-    .rule.highlight .rule-body {
-      color: #ccc;
-    }
-
-    /* Credits */
+    /* CREDITS */
     .credits {
-      margin-top: 56px;
-      padding-top: 32px;
+      padding: 60px 8vw 100px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .credits-inner {
+      border: 1px solid var(--border);
+      padding: 32px 36px;
+      max-width: 640px;
+      position: relative;
+      background: var(--accent-glow);
+    }
+
+    .credits-inner::before {
+      content: 'CREDITS';
+      position: absolute;
+      top: -10px;
+      left: 20px;
+      background: var(--bg);
+      padding: 0 8px;
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      color: var(--muted);
+    }
+
+    .credits p {
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--muted);
+    }
+
+    /* FOOTER */
+    footer {
       border-top: 1px solid var(--border);
-      font-size: 13px;
-      color: var(--muted);
-      line-height: 1.7;
-      animation: fadeUp 0.5s 0.4s ease both;
-    }
-
-    .credits strong {
-      color: #555;
-      font-weight: 500;
-    }
-
-    /* Footer nav */
-    .back-link {
-      display: inline-flex;
+      padding: 24px 8vw;
+      display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 8px;
-      margin-top: 48px;
-      font-size: 13px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+      font-size: 12px;
       color: var(--muted);
-      text-decoration: none;
-      transition: color 0.2s;
-      animation: fadeUp 0.5s 0.45s ease both;
+      letter-spacing: 0.1em;
+      position: relative;
+      z-index: 1;
     }
 
-    .back-link:hover { color: var(--accent); }
+    footer span { color: var(--accent-bright); }
 
-    .back-link::before {
-      content: '←';
-      font-size: 16px;
-    }
-
-    /* Animations */
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Mobile */
-    @media (max-width: 520px) {
-      .page { padding: 48px 16px 80px; }
-      .rule { padding: 22px 20px 22px 64px; }
-      .rule-number { left: 18px; font-size: 28px; }
+    @media (max-width: 600px) {
+      .rule { grid-template-columns: 50px 1fr; gap: 0 16px; }
+      .rule-num { font-size: 36px; }
     }
   </style>
 </head>
 <body>
-  <div class="page">
 
-    <header>
-      <div class="tag">🦍 DarkRat1 — Fan Code</div>
-      <h1>Lobby<br /><span>Rules</span></h1>
-      <p class="subtitle">Keep it fun, keep it respectful. Follow these and we'll run lobbies all day long.</p>
-    </header>
-
-    <div class="rules">
-
-      <div class="rule">
-        <span class="rule-number">01</span>
-        <div class="rule-title">Gameplay Comes First</div>
-        <div class="rule-body">
-          If I suggest a game or give instructions, please listen so we can actually play. Arguing, ignoring instructions, or trying to take over the lobby ruins it for everyone. <em>Ignoring instructions tells me you're here for just yourself.</em>
-        </div>
-      </div>
-
-      <div class="rule">
-        <span class="rule-number">02</span>
-        <div class="rule-title">Give Me Space</div>
-        <div class="rule-body">
-          Please don't crowd me or get right in my face in-game. Back up a few steps so I can see, hear, and play properly. <em>Being close to me might make you think I'll pay attention to the closest person — when really it makes me ignore them.</em>
-        </div>
-      </div>
-
-      <div class="rule">
-        <span class="rule-number">03</span>
-        <div class="rule-title">Keep the Noise Under Control</div>
-        <div class="rule-body">
-          No shouting over each other. One person talking at a time works best. <em>Talking over others guarantees nobody hears you properly. Including me.</em>
-        </div>
-      </div>
-
-      <div class="rule">
-        <span class="rule-number">04</span>
-        <div class="rule-title">Questions, Photos & High-Fives</div>
-        <div class="rule-body">
-          These happen <em>after</em> I do any minigames or videos — not in the middle.
-        </div>
-      </div>
-
-      <div class="rule highlight">
-        <span class="rule-number">05</span>
-        <div class="rule-title">Respect = More Lobbies</div>
-        <div class="rule-body">
-          If a lobby stays respectful and fun, I'll keep doing them. Simple as that.
-        </div>
-      </div>
-
+  <section class="hero">
+    <p class="hero-tag">darkrat1 · Lobby Rules</p>
+    <h1>
+      THE
+      <span>RULES.</span>
+    </h1>
+    <p class="hero-sub">
+      These exist so lobbies actually work. Follow them and we all have a good time. Simple.
+    </p>
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-arrow"></div>
     </div>
+    <div class="hero-line">darkrat1.github.io/rules</div>
+  </section>
 
-    <div class="credits">
-      <strong>Credits:</strong> Most of these rules are the same as Pepsi Dee's — his are very good and I tweaked some. I did not think of most of these from the top of my head. Credit where it's due.
+  <section class="rules-section">
+    <p class="section-label">5 Rules · Read them.</p>
+
+    <article class="rule">
+      <div class="rule-accent-bar"></div>
+      <div class="rule-num">01</div>
+      <div class="rule-body">
+        <h2 class="rule-title">Gameplay Comes First</h2>
+        <p class="rule-text">
+          If I suggest a game or give instructions, <span class="highlight">please listen</span> so we can actually play.
+          Arguing, ignoring instructions, or trying to take over the lobby ruins it for everyone.
+          <span class="warning">Ignoring instructions tells me you're here just for yourself.</span>
+        </p>
+      </div>
+    </article>
+
+    <article class="rule">
+      <div class="rule-accent-bar"></div>
+      <div class="rule-num">02</div>
+      <div class="rule-body">
+        <h2 class="rule-title">Give Me Space</h2>
+        <p class="rule-text">
+          Please don't crowd me or get right in my face in-game. <span class="highlight">Back up a few steps</span> so I can see, hear, and play properly.
+          Being close to me might make you think I'll pay attention to the closest person —
+          <span class="warning">when really it makes me ignore them.</span>
+        </p>
+      </div>
+    </article>
+
+    <article class="rule">
+      <div class="rule-accent-bar"></div>
+      <div class="rule-num">03</div>
+      <div class="rule-body">
+        <h2 class="rule-title">Keep the Noise Under Control</h2>
+        <p class="rule-text">
+          No shouting over each other. <span class="highlight">One person talking at a time</span> works best.
+          <span class="warning">Talking over others guarantees nobody hears you properly. Including me.</span>
+        </p>
+      </div>
+    </article>
+
+    <article class="rule">
+      <div class="rule-accent-bar"></div>
+      <div class="rule-num">04</div>
+      <div class="rule-body">
+        <h2 class="rule-title">Questions, Photos & High-Fives</h2>
+        <p class="rule-text">
+          These happen <span class="highlight">AFTER</span> I do any minigames or videos —
+          <span class="warning">not in the middle of them.</span>
+        </p>
+      </div>
+    </article>
+
+    <article class="rule">
+      <div class="rule-accent-bar"></div>
+      <div class="rule-num">05</div>
+      <div class="rule-body">
+        <h2 class="rule-title">Respect = More Lobbies</h2>
+        <p class="rule-text">
+          If a lobby stays <span class="highlight">respectful and fun</span>, I'll keep doing them.
+          It's that straightforward.
+        </p>
+      </div>
+    </article>
+
+  </section>
+
+  <div class="credits">
+    <div class="credits-inner">
+      <p>
+        Most of these are the same as <strong style="color: #e8f0fe;">pepsi dee's</strong> — his rules are very good and I tweaked some.
+        I did not think of most of these from the top of my head. Credit where it's due.
+      </p>
     </div>
-
-    <a class="back-link" href="https://darkrat1.github.io">Back to Home</a>
-
   </div>
+
+  <footer>
+    <span>darkrat1</span>
+    <p>darkrat1.github.io/rules</p>
+  </footer>
+
+  <script>
+    const items = document.querySelectorAll('.rule, .credits');
+    let lastScrollY = window.scrollY;
+
+    // Track scroll direction continuously
+    window.addEventListener('scroll', () => { lastScrollY = window.scrollY; }, { passive: true });
+
+    // Per-element previous ratio for direction sensing
+    const prevRatio = new WeakMap();
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        const el = entry.target;
+        const ratio = entry.intersectionRatio;
+        const prev = prevRatio.get(el) ?? 0;
+
+        // Determine stagger for rules only
+        const rules = [...document.querySelectorAll('.rule')];
+        const ruleIdx = rules.indexOf(el);
+        const stagger = ruleIdx >= 0 ? ruleIdx * 70 : 0;
+
+        if (entry.isIntersecting) {
+          // Entering viewport — determine if scrolling down or up
+          const scrollingDown = window.scrollY >= lastScrollY || entry.boundingClientRect.top > 0;
+
+          el.classList.remove('out-down', 'out-up', 'in');
+
+          setTimeout(() => {
+            el.classList.add('in');
+          }, stagger);
+
+        } else {
+          // Leaving viewport
+          el.classList.remove('in');
+
+          // If element is below viewport (scrolled back up) → exit downward
+          // If element is above viewport (scrolled past it going down) → exit upward
+          if (entry.boundingClientRect.top > 0) {
+            // Element is below the fold → scrolled upward past entry point
+            el.classList.remove('out-up');
+            el.classList.add('out-down');
+          } else {
+            // Element is above the fold → scrolled downward past it
+            el.classList.remove('out-down');
+            el.classList.add('out-up');
+          }
+        }
+
+        prevRatio.set(el, ratio);
+      });
+    }, {
+      threshold: [0, 0.1, 0.15],
+      rootMargin: '0px 0px -5% 0px'
+    });
+
+    items.forEach(el => observer.observe(el));
+  </script>
+
 </body>
 </html>
