@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DarkRat1 — Fan Code of Conduct</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --surface: #111111;
+      --border: #1e1e1e;
+      --accent: #3b8eff;
+      --accent-dim: rgba(59, 142, 255, 0.10);
+      --text: #e8e8e8;
+      --muted: #666;
+      --number: #1e1e1e;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Subtle noise texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 80px 24px 120px;
+    }
+
+    /* Header */
+    header {
+      margin-bottom: 64px;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 4px 10px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(52px, 10vw, 96px);
+      line-height: 0.92;
+      letter-spacing: 0.02em;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+
+    h1 span {
+      color: var(--accent);
+    }
+
+    .subtitle {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 480px;
+    }
+
+    /* Rules list */
+    .rules {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .rule {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 28px 32px 28px 80px;
+      cursor: default;
+      transition: border-color 0.2s, background 0.2s;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .rule:nth-child(1) { animation-delay: 0.08s; }
+    .rule:nth-child(2) { animation-delay: 0.14s; }
+    .rule:nth-child(3) { animation-delay: 0.20s; }
+    .rule:nth-child(4) { animation-delay: 0.26s; }
+    .rule:nth-child(5) { animation-delay: 0.32s; }
+
+    .rule:hover {
+      border-color: var(--accent);
+      background: #131313;
+    }
+
+    .rule:hover .rule-number {
+      color: var(--accent);
+    }
+
+    .rule-number {
+      position: absolute;
+      left: 28px;
+      top: 28px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 36px;
+      color: #2a2a2a;
+      line-height: 1;
+      transition: color 0.2s;
+      user-select: none;
+    }
+
+    .rule-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 0.05em;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .rule-body {
+      font-size: 14px;
+      color: #999;
+      line-height: 1.75;
+    }
+
+    .rule-body em {
+      color: #bbb;
+      font-style: normal;
+      font-weight: 500;
+    }
+
+    /* Special last rule */
+    .rule.highlight {
+      border-color: var(--accent);
+      background: var(--accent-dim);
+    }
+
+    .rule.highlight .rule-number {
+      color: rgba(230, 57, 70, 0.3);
+    }
+
+    .rule.highlight .rule-title {
+      color: var(--accent);
+    }
+
+    .rule.highlight .rule-body {
+      color: #ccc;
+    }
+
+    /* Credits */
+    .credits {
+      margin-top: 56px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+      animation: fadeUp 0.5s 0.4s ease both;
+    }
+
+    .credits strong {
+      color: #555;
+      font-weight: 500;
+    }
+
+    /* Footer nav */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 48px;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+      animation: fadeUp 0.5s 0.45s ease both;
+    }
+
+    .back-link:hover { color: var(--accent); }
+
+    .back-link::before {
+      content: '←';
+      font-size: 16px;
+    }
+
+    /* Animations */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Mobile */
+    @media (max-width: 520px) {
+      .page { padding: 48px 16px 80px; }
+      .rule { padding: 22px 20px 22px 64px; }
+      .rule-number { left: 18px; font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <header>
+      <div class="tag">🦍 DarkRat1 — Fan Code</div>
+      <h1>Lobby<br /><span>Rules</span></h1>
+      <p class="subtitle">Keep it fun, keep it respectful. Follow these and we'll run lobbies all day long.</p>
+    </header>
+
+    <div class="rules">
+
+      <div class="rule">
+        <span class="rule-number">01</span>
+        <div class="rule-title">Gameplay Comes First</div>
+        <div class="rule-body">
+          If I suggest a game or give instructions, please listen so we can actually play. Arguing, ignoring instructions, or trying to take over the lobby ruins it for everyone. <em>Ignoring instructions tells me you're here for just yourself.</em>
+        </div>
+      </div>
+
+      <div class="rule">
+        <span class="rule-number">02</span>
+        <div class="rule-title">Give Me Space</div>
+        <div class="rule-body">
+          Please don't crowd me or get right in my face in-game. Back up a few steps so I can see, hear, and play properly. <em>Being close to me might make you think I'll pay attention to the closest person — when really it makes me ignore them.</em>
+        </div>
+      </div>
+
+      <div class="rule">
+        <span class="rule-number">03</span>
+        <div class="rule-title">Keep the Noise Under Control</div>
+        <div class="rule-body">
+          No shouting over each other. One person talking at a time works best. <em>Talking over others guarantees nobody hears you properly. Including me.</em>
+        </div>
+      </div>
+
+      <div class="rule">
+        <span class="rule-number">04</span>
+        <div class="rule-title">Questions, Photos & High-Fives</div>
+        <div class="rule-body">
+          These happen <em>after</em> I do any minigames or videos — not in the middle.
+        </div>
+      </div>
+
+      <div class="rule highlight">
+        <span class="rule-number">05</span>
+        <div class="rule-title">Respect = More Lobbies</div>
+        <div class="rule-body">
+          If a lobby stays respectful and fun, I'll keep doing them. Simple as that.
+        </div>
+      </div>
+
+    </div>
+
+    <div class="credits">
+      <strong>Credits:</strong> Most of these rules are the same as Pepsi Dee's — his are very good and I tweaked some. I did not think of most of these from the top of my head. Credit where it's due.
+    </div>
+
+    <a class="back-link" href="https://darkrat1.github.io">Back to Home</a>
+
+  </div>
+</body>
+</html>
