@@ -63,20 +63,31 @@ toggleSeconds.addEventListener('change', () => {
 themeSelect.addEventListener('change', () => {
   const theme = themeSelect.value;
 
+  const panel = document.getElementById('settings-panel');
+
   if (theme === 'seasonal') {
-    // SPRING 🌸
     document.body.style.background = "linear-gradient(135deg, #a8e6cf, #dcedc1, #ffd3b6)";
     document.body.style.color = "black";
+
+    panel.style.background = "white";
+    panel.style.color = "black";
   }
 
   if (theme === 'light') {
     document.body.style.background = "white";
     document.body.style.color = "black";
+
+    panel.style.background = "white";
+    panel.style.color = "black";
   }
 
   if (theme === 'dark') {
     document.body.style.background = "#111";
     document.body.style.color = "white";
+
+    // 👇 THIS is what you wanted
+    panel.style.background = "#1e1e1e";
+    panel.style.color = "white";
   }
 });
 
