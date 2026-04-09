@@ -34,7 +34,13 @@ updateClock();
 
 // SETTINGS BUTTON
 settingsBtn.addEventListener('click', () => {
-  settingsPanel.classList.toggle('hidden');
+  overlay.classList.remove('hidden');
+});
+// Click outside to close
+overlay.addEventListener('click', (e) => {
+  if (e.target === overlay) {
+    overlay.classList.add('hidden');
+  }
 });
 
 // TOGGLES
