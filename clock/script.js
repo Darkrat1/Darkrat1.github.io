@@ -7,6 +7,9 @@ const themeSelect = document.getElementById('theme-select');
 const timeFont = document.getElementById('time-font');
 const dateFont = document.getElementById('date-font');
 
+// Set default date font on load
+dateEl.style.fontFamily = "'Trebuchet MS', sans-serif";
+
 // SETTINGS STATE
 let showDate = true;
 let showSeconds = true;
