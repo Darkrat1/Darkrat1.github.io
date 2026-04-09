@@ -1,7 +1,5 @@
 const clockEl = document.getElementById('clock');
 const dateEl = document.getElementById('date');
-const settingsBtn = document.getElementById('settings-btn');
-const settingsPanel = document.getElementById('settings-panel');
 
 const toggleDate = document.getElementById('toggle-date');
 const toggleSeconds = document.getElementById('toggle-seconds');
@@ -32,11 +30,13 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 
-// SETTINGS BUTTON
+const settingsBtn = document.getElementById('settings-btn');
+const overlay = document.getElementById('settings-overlay');
+
 settingsBtn.addEventListener('click', () => {
   overlay.classList.remove('hidden');
 });
-// Click outside to close
+
 overlay.addEventListener('click', (e) => {
   if (e.target === overlay) {
     overlay.classList.add('hidden');
