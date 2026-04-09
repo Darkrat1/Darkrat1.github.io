@@ -6,8 +6,51 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
   <div id="clock">00:00:00</div>
-  <button id="toggle-bg">Toggle Background</button>
+  <div id="date">Loading...</div>
+
+  <!-- Settings Button -->
+  <button id="settings-btn">⚙️</button>
+
+  <!-- Settings Panel -->
+  <div id="settings-panel" class="hidden">
+    <h2>Settings</h2>
+
+    <label>Theme:</label>
+    <select id="theme-select">
+      <option value="seasonal">Seasonal</option>
+      <option value="light">Light</option>
+      <option value="dark">Dark</option>
+    </select>
+
+    <label>
+      <input type="checkbox" id="toggle-date" checked>
+      Show Date
+    </label>
+
+    <label>
+      <input type="checkbox" id="toggle-seconds" checked>
+      Show Seconds
+    </label>
+
+    <label>Time Font:</label>
+    <select id="time-font">
+      <option value="'Arial Black', Arial, sans-serif">Default</option>
+      <option value="Verdana, sans-serif">Verdana</option>
+      <option value="'Courier New', monospace">Courier</option>
+      <option value="'Trebuchet MS', sans-serif">Trebuchet</option>
+    </select>
+
+    <label>Date Font:</label>
+    <select id="date-font">
+      <option value="'Arial Black', Arial, sans-serif">Default</option>
+      <option value="Verdana, sans-serif">Verdana</option>
+      <option value="'Courier New', monospace">Courier</option>
+      <option value="'Trebuchet MS', sans-serif">Trebuchet</option>
+    </select>
+
+  </div>
 
   <script src="script.js"></script>
 </body>
