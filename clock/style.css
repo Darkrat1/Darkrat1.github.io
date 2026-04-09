@@ -1,0 +1,82 @@
+body {
+  font-family: 'Arial Black', Arial, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  background: linear-gradient(135deg, #a8e6cf, #dcedc1, #ffd3b6);
+  transition: background 0.5s, color 0.5s;
+}
+
+#clock {
+  font-size: 5em;
+  font-weight: bold;
+}
+
+#date {
+  font-size: 1.5em;
+  margin-top: 10px;
+  opacity: 0.8;
+}
+
+/* ⚙️ button */
+#settings-btn {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  font-size: 1.5em;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+/* BACKDROP (dark overlay) */
+#settings-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* SETTINGS CARD */
+#settings-panel {
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+  width: 300px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Clean layout */
+.setting-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.setting-inline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Hide */
+.hidden {
+  display: none !important;
+}
+
+select, input {
+  padding: 6px;
+  border-radius: 6px;
+}
