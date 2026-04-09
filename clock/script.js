@@ -18,9 +18,9 @@ let showSeconds = true;
 function updateClock() {
   const now = new Date();
 
-  let hours = now.getUTCHours().toString().padStart(2, '0');
-  let minutes = now.getUTCMinutes().toString().padStart(2, '0');
-  let seconds = now.getUTCSeconds().toString().padStart(2, '0');
+  let hours = now.getGMTHours().toString().padStart(2, '0');
+  let minutes = now.getGMTMinutes().toString().padStart(2, '0');
+  let seconds = now.getGMTSeconds().toString().padStart(2, '0');
 
   clockEl.textContent = showSeconds
     ? `${hours}:${minutes}:${seconds}`
