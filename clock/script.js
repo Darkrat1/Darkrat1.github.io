@@ -16,11 +16,14 @@ let showSeconds = true;
 
 // CLOCK
 function updateClock() {
-  const now = new Date();
-
-  let hours = now.getGMTHours().toString().padStart(2, '0');
-  let minutes = now.getGMTMinutes().toString().padStart(2, '0');
-  let seconds = now.getGMTSeconds().toString().padStart(2, '0');
+  const now = new Date(); // uses the computer's time
+      let hours = now.getHours();
+      let minutes = now.getMinutes();
+      let seconds = now.getSeconds();
+    // format numbers properly
+  hours = String(hours).padStart(2, '0');
+  minutes = String(minutes).padStart(2, '0');
+  seconds = String(seconds).padStart(2, '0');
 
   clockEl.textContent = showSeconds
     ? `${hours}:${minutes}:${seconds}`
