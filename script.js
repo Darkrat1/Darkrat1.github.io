@@ -329,7 +329,7 @@ document.addEventListener('DOMContentLoaded', () => {
       profilePicture.style.opacity = '1';
       profileName.style.opacity = '1';
       profileBio.style.opacity = '1';
-      visitorCount.style.opacity = '1';
+      visitorCount.style.opacity = '-1';
     } else {
       profileBlock.style.background = `rgba(0, 0, 0, ${opacity})`;
       profileBlock.style.borderOpacity = opacity;
