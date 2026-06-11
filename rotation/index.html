@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rotation Explorer Pro</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:"Segoe UI",sans-serif;
+    background:linear-gradient(135deg,#dbeafe,#eef2ff);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:20px;
+}
+
+h1{
+    color:#1e40af;
+    font-size:3rem;
+    margin-bottom:10px;
+    text-align:center;
+}
+
+.subtitle{
+    color:#374151;
+    font-size:1.2rem;
+    margin-bottom:20px;
+    text-align:center;
+}
+
+.toolbar{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:10px;
+    max-width:1500px;
+    margin-bottom:20px;
+}
+
+button{
+    border:none;
+    border-radius:18px;
+    padding:16px 24px;
+    font-size:1.1rem;
+    font-weight:bold;
+    cursor:pointer;
+    color:white;
+    transition:.15s;
+}
+
+button:hover{
+    transform:translateY(-2px);
+}
+
+button:active{
+    transform:translateY(2px);
+}
+
+.blueBtn{background:#2563eb;}
+.greenBtn{background:#16a34a;}
+.orangeBtn{background:#ea580c;}
+.redBtn{background:#dc2626;}
+.purpleBtn{background:#7c3aed;}
+
+.canvasWrap{
+    background:white;
+    padding:15px;
+    border-radius:24px;
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+}
+
+canvas{
+    display:block;
+    border-radius:16px;
+    touch-action:none;
+    cursor:crosshair;
+}
+
+.info{
+    margin-top:15px;
+    font-size:1.1rem;
+    font-weight:bold;
+    text-align:center;
+}
+
+.blueText{
+    color:#2563eb;
+}
+
+.redText{
+    color:#dc2626;
+}
+
+.goldText{
+    color:#d97706;
+}
+</style>
+</head>
+<body>
+
+<h1>?? Rotation Explorer Pro</h1>
+
+<div class="subtitle">
+Click grid intersections to create a shape. Drag points to move them.
+</div>
+
+<div class="toolbar">
+
+<button class="greenBtn" onclick="finishShape()">
+? Finish Shape
+</button>
+
+<button class="orangeBtn" onclick="undoPoint()">
+?? Undo
+</button>
+
+<button class="redBtn" onclick="clearAll()">
+??? Clear
+</button>
+
+<button class="purpleBtn" onclick="startSetCentre()">
+?? Set Rotation Centre
+</button>
+
+<button class="blueBtn" onclick="rotate(-90)">
+? 90°
+</button>
+
+<button class="blueBtn" onclick="rotate(90)">
+? 90°
+</button>
+
+<button class="purpleBtn" onclick="rotate(180)">
+180°
+</button>
+
+<button class="orangeBtn" onclick="resetRotation()">
+?? Reset Rotation
+</button>
+
+<button class="greenBtn" onclick="saveImage()">
+?? Save PNG
+</button>
+
+</div>
+
+<div class="canvasWrap">
+<canvas id="canvas" width="1400" height="800"></canvas>
+</div>
+
+<div class="info">
+<span class="blueText">? Original Shape</span>
+&nbsp;&nbsp;&nbsp;
+<span class="redText">? Rotated Shape</span>
+&nbsp;&nbsp;&nbsp;
+<span class="goldText">?? Rotation Centre</span>
+</div>
+
+<script>
+
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+const scale = 40;
+
+const centreX =
+    Math.round(canvas.width / (2 * scale))
+    * scale;
+
+const centreY =
+    Math.round(canvas.height / (2 * scale))
+    * scale;
+
+let originalPoints = [];
+let currentPoints = [];
+
+let finished = false;
+
+let draggingPoint = -1;
+let pointerMoved = false;
+
+let rotationCentre = {x:0,y:0};
+let settingCentre = false;
+
+function getGridPosition(e){
+
+    const rect = canvas.getBoundingClientRect();
+
+    const x =
+        e.clientX - rect.left;
+
+    const y =
+        e.clientY - rect.top;
+
+    return {
+
+        screenX:x,
+        screenY:y,
+
+        gridX:Math.round(
+            (x - centreX) / scale
+        ),
+
+        gridY:Math.round(
+            -(y - centreY) / scale
+        )
+
+    };
+}
+
+canvas.addEventListener("pointerdown",(e)=>{
+
+    if(finished) return;
+
+    pointerMoved = false;
+
+    const pos = getGridPosition(e);
+
+    for(let i=0;i<originalPoints.length;i++){
+
+        const px =
+            centreX +
+            originalPoints[i].x * scale;
+
+        const py =
+            centreY -
+            originalPoints[i].y * scale;
+
+        if(
+            Math.hypot(
+                pos.screenX - px,
+                pos.screenY - py
+            ) < 18
+        ){
+            draggingPoint = i;
+            return;
+        }
+    }
+});
+
+canvas.addEventListener("pointermove",(e)=>{
+
+    if(draggingPoint === -1) return;
+
+    pointerMoved = true;
+
+    const pos = getGridPosition(e);
+
+    originalPoints[draggingPoint] = {
+
+        x:pos.gridX,
+        y:pos.gridY
+
+    };
+
+    redraw();
+});
+
+canvas.addEventListener("pointerup",(e)=>{
+
+    const pos = getGridPosition(e);
+
+    if(draggingPoint !== -1){
+
+        draggingPoint = -1;
+        redraw();
+        return;
+    }
+
+    if(pointerMoved) return;
+
+    if(finished) return;
+
+    if(settingCentre){
+
+        rotationCentre = {
+
+            x:pos.gridX,
+            y:pos.gridY
+
+        };
+
+        settingCentre = false;
+
+        redraw();
+        return;
+    }
+
+    originalPoints.push({
+
+        x:pos.gridX,
+        y:pos.gridY
+
+    });
+
+    redraw();
+
+});
+
+function startSetCentre(){
+
+    settingCentre = true;
+
+    alert(
+        "Click a grid intersection to place the rotation centre."
+    );
+}
+
+function finishShape(){
+
+    if(originalPoints.length < 3){
+
+        alert(
+            "Add at least 3 points."
+        );
+
+        return;
+    }
+
+    finished = true;
+
+    currentPoints =
+        JSON.parse(
+            JSON.stringify(
+                originalPoints
+            )
+        );
+
+    redraw();
+}
+
+function rotatePoint(x,y,angle){
+
+    const r =
+        angle *
+        Math.PI /
+        180;
+
+    const tx =
+        x -
+        rotationCentre.x;
+
+    const ty =
+        y -
+        rotationCentre.y;
+
+    const rx =
+        tx*Math.cos(r) -
+        ty*Math.sin(r);
+
+    const ry =
+        tx*Math.sin(r) +
+        ty*Math.cos(r);
+
+    return{
+
+        x:
+            rx +
+            rotationCentre.x,
+
+        y:
+            ry +
+            rotationCentre.y
+
+    };
+}
+
+function rotate(angle){
+
+    if(settingCentre){
+
+        rotationCentre = {
+            x: pos.gridX,
+            y: pos.gridY
+        };
+
+        settingCentre = false;
+        redraw();
+        return;
+    }
+
+    if(!finished) return;
+
+    currentPoints =
+        currentPoints.map(p =>
+            rotatePoint(
+                p.x,
+                p.y,
+                angle
+            )
+        );
+
+    redraw();
+}
+
+function resetRotation(){
+
+    if(settingCentre){
+
+        rotationCentre = {
+            x: pos.gridX,
+            y: pos.gridY
+        };
+
+        settingCentre = false;
+        redraw();
+        return;
+    }
+
+    if(!finished) return;
+
+    currentPoints =
+        JSON.parse(
+            JSON.stringify(
+                originalPoints
+            )
+        );
+
+    redraw();
+}
+
+function undoPoint(){
+
+    if(settingCentre){
+
+        rotationCentre = {
+            x: pos.gridX,
+            y: pos.gridY
+        };
+
+        settingCentre = false;
+        redraw();
+        return;
+}
+
+    if(finished) return;
+
+    originalPoints.pop();
+
+    redraw();
+}
+
+function clearAll(){
+
+    originalPoints = [];
+    currentPoints = [];
+
+    if(settingCentre){
+
+        rotationCentre = {
+            x: pos.gridX,
+            y: pos.gridY
+        };
+
+        settingCentre = false;
+        redraw();
+        return;
+}
+
+    finished = false;
+
+    rotationCentre = {
+        x:0,
+        y:0
+    };
+
+    settingCentre = false;
+
+    redraw();
+}
+
+function saveImage(){
+
+    const link =
+        document.createElement("a");
+
+    link.download =
+        "rotation-explorer.png";
+
+    link.href =
+        canvas.toDataURL(
+            "image/png"
+        );
+
+    link.click();
+}
+
+function drawGrid(){
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+    ctx.strokeStyle =
+        "#e5e7eb";
+
+    ctx.lineWidth = 1;
+
+    for(
+        let x=0;
+        x<canvas.width;
+        x+=scale
+    ){
+
+        ctx.beginPath();
+        ctx.moveTo(x,0);
+        ctx.lineTo(
+            x,
+            canvas.height
+        );
+        ctx.stroke();
+    }
+
+    for(
+        let y=0;
+        y<canvas.height;
+        y+=scale
+    ){
+
+        ctx.beginPath();
+        ctx.moveTo(0,y);
+        ctx.lineTo(
+            canvas.width,
+            y
+        );
+        ctx.stroke();
+    }
+
+    ctx.fillStyle =
+        "#cbd5e1";
+
+    for(
+        let x=0;
+        x<canvas.width;
+        x+=scale
+    ){
+
+        for(
+            let y=0;
+            y<canvas.height;
+            y+=scale
+        ){
+
+            ctx.beginPath();
+
+            ctx.arc(
+                x,
+                y,
+                2,
+                0,
+                Math.PI*2
+            );
+
+            ctx.fill();
+        }
+    }
+
+    ctx.strokeStyle =
+        "#111827";
+
+    ctx.lineWidth = 3;
+
+    ctx.beginPath();
+    ctx.moveTo(
+        centreX,
+        0
+    );
+    ctx.lineTo(
+        centreX,
+        canvas.height
+    );
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(
+        0,
+        centreY
+    );
+    ctx.lineTo(
+        canvas.width,
+        centreY
+    );
+    ctx.stroke();
+}
+
+function drawRotationCentre(){
+
+    const px =
+        centreX +
+        rotationCentre.x * scale;
+
+    const py =
+        centreY -
+        rotationCentre.y * scale;
+
+    ctx.beginPath();
+    ctx.arc(
+        px,
+        py,
+        18,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fillStyle =
+        "#f59e0b";
+
+    ctx.fill();
+
+    ctx.strokeStyle =
+        "white";
+
+    ctx.lineWidth = 4;
+
+    ctx.stroke();
+
+    ctx.fillStyle =
+        "#111827";
+
+    ctx.font =
+        "bold 20px Segoe UI";
+
+    ctx.fillText(
+        "??",
+        px - 12,
+        py + 7
+    );
+}
+
+function drawShape(points,color){
+
+    if(points.length === 0)
+        return;
+
+    ctx.strokeStyle =
+        color;
+
+    ctx.fillStyle =
+        color;
+
+    ctx.lineWidth = 6;
+
+    ctx.beginPath();
+
+    points.forEach((p,i)=>{
+
+        const px =
+            centreX +
+            p.x * scale;
+
+        const py =
+            centreY -
+            p.y * scale;
+
+        if(i===0){
+
+            ctx.moveTo(
+                px,
+                py
+            );
+
+        }else{
+
+            ctx.lineTo(
+                px,
+                py
+            );
+
+        }
+
+    });
+
+    if(points.length >= 3){
+
+        ctx.closePath();
+
+    }
+
+    ctx.stroke();
+
+    points.forEach((p,index)=>{
+
+        const px =
+            centreX +
+            p.x * scale;
+
+        const py =
+            centreY -
+            p.y * scale;
+
+        ctx.beginPath();
+
+        ctx.arc(
+            px,
+            py,
+            12,
+            0,
+            Math.PI*2
+        );
+
+        if(
+            index ===
+            draggingPoint
+        ){
+
+            ctx.shadowBlur = 25;
+            ctx.shadowColor =
+                "#fbbf24";
+        }
+
+        ctx.fill();
+
+        ctx.shadowBlur = 0;
+
+        ctx.strokeStyle =
+            "white";
+
+        ctx.lineWidth = 3;
+
+        ctx.stroke();
+
+    });
+}
+
+function redraw(){
+
+    drawGrid();
+
+    drawRotationCentre();
+
+    drawShape(
+        originalPoints,
+        "#2563eb"
+    );
+
+    if(finished){
+
+        drawShape(
+            currentPoints,
+            "#dc2626"
+        );
+
+    }
+}
+
+redraw();
+
+</script>
+
+</body>
+</html>
