@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b1020">
+<title>DarkRat1 — Home</title>
+<style>
+  :root { color-scheme: dark; --bg:#090d18; --panel:#11182a; --line:#26324a; --muted:#9aa8c2; --text:#f2f5ff; --accent:#7c9cff; }
+  * { box-sizing:border-box; }
+  body { margin:0; min-height:100vh; background:radial-gradient(ellipse at 15% 0%,#1b2a50 0,transparent 42%),var(--bg); color:var(--text); font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif; }
+  main { width:min(960px,calc(100% - 32px)); margin:0 auto; padding:64px 0 40px; }
+  .eyebrow { color:var(--accent); font-size:.78rem; font-weight:800; letter-spacing:.18em; text-transform:uppercase; }
+  h1 { margin:8px 0 8px; font-size:clamp(2.5rem,7vw,4.6rem); line-height:1.02; letter-spacing:-.055em; }
+  .intro { color:var(--muted); margin:0; font-size:1.08rem; }
+  .section-title { margin:42px 0 14px; font-size:1rem; color:#c9d4eb; }
+  .links { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px; }
+  .tile { display:block; min-height:130px; padding:20px; border:1px solid var(--line); border-radius:18px; background:linear-gradient(145deg,rgba(24,35,59,.95),rgba(14,20,35,.95)); color:inherit; text-decoration:none; transition:transform .16s,border-color .16s,background .16s; }
+  .tile:hover,.tile:focus-visible { transform:translateY(-3px); border-color:var(--accent); background:#17233d; outline:none; }
+  .tile .symbol { display:inline-grid; place-items:center; width:38px; height:38px; margin-bottom:12px; border-radius:12px; background:#25365e; color:#c5d3ff; font-size:1.15rem; }
+  .tile h3 { margin:0 0 3px; font-size:1.08rem; }
+  .tile p { margin:0; color:var(--muted); font-size:.9rem; }
+  #status { min-height:0; }
+  .status-card { margin-top:12px; padding:16px 18px; border:1px solid #604c32; border-radius:14px; background:rgba(70,48,25,.28); color:#ffe0b0; }
+  .status-card strong { display:block; margin-bottom:3px; }
+  footer { margin-top:48px; color:#65738e; font-size:.82rem; }
+  @media(max-width:500px){main{padding-top:42px}.tile{min-height:112px}}
+</style>
+</head>
+<body>
+<main>
+  <div class="eyebrow">Personal site</div>
+  <h1>DarkRat1<span style="color:var(--accent)">.</span></h1>
+  <p class="intro">A little corner of the internet. Pick somewhere to go.</p>
+
+  <h2 class="section-title">Your shortcuts</h2>
+  <nav class="links" aria-label="Website links">
+    <a class="tile" href="https://darkrat1.github.io/Calender"><span class="symbol" aria-hidden="true">▦</span><h3>Calendar</h3><p>Dates and plans</p></a>
+    <a class="tile" href="https://darkrat1.github.io/clock"><span class="symbol" aria-hidden="true">◷</span><h3>Clock</h3><p>Time at a glance</p></a>
+    <a class="tile" href="https://darkrat1.github.io/drive"><span class="symbol" aria-hidden="true">▤</span><h3>Drive</h3><p>Your files and stuff</p></a>
+    <a class="tile" href="https://darkrat1.github.io/rotation"><span class="symbol" aria-hidden="true">⟳</span><h3>Rotation</h3><p>Rotation tool</p></a>
+    <a class="tile" href="https://darkrat1.github.io/timer"><span class="symbol" aria-hidden="true">◴</span><h3>Timer</h3><p>Start a countdown</p></a>
+  </nav>
+
+  <div id="status" aria-live="polite"></div>
+  <footer>darkrat1.github.io · <span id="year"></span></footer>
+</main>
+<script>
+  // Update this file in your repository, or set STATUS_FILE to the raw URL of a plain-text date file.
+  // Expected date format: DD/MM/YY (for example: 27/10/26).
+  const STATUS_FILE = "./status.txt";
+  const statusBox = document.getElementById("status");
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  function parseDate(text) {
+    const match = text.trim().match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{2}|\d{4})$/);
+    if (!match) return null;
+    let year = Number(match[3]);
+    if (match[3].length === 2) year += year >= 70 ? 1900 : 2000;
+    const date = new Date(year, Number(match[2]) - 1, Number(match[1]));
+    if (date.getFullYear() !== year || date.getMonth() !== Number(match[2]) - 1 || date.getDate() !== Number(match[1])) return null;
+    date.setHours(0,0,0,0);
+    return date;
+  }
+
+  async function updateStatus() {
+    try {
+      const response = await fetch(STATUS_FILE + "?v=" + Date.now(), { cache: "no-store" });
+      if (!response.ok) throw new Error("Could not load status.txt");
+      const lastDate = parseDate(await response.text());
+      if (!lastDate) throw new Error("Invalid date in status.txt");
+      const today = new Date(); today.setHours(0,0,0,0);
+      const days = Math.floor((today - lastDate) / 86400000);
+      statusBox.replaceChildren();
+      if (days <= 0) return; // Up to date (or future-dated): show nothing.
+      const card = document.createElement("div");
+      card.className = "status-card";
+      const heading = document.createElement("strong");
+      const detail = document.createElement("span");
+      if (days < 7) {
+        heading.textContent = "A little quiet around here…";
+        detail.textContent = `Last update was ${days} day${days === 1 ? "" : "s"} ago.`;
+      } else if (days < 30) {
+        heading.textContent = "I've been inactive";
+        detail.textContent = `It's been ${days} days since the last update.`;
+      } else {
+        heading.textContent = "Have I vanished?";
+        detail.textContent = `It's been ${days} days since the last update. I might be busy… or probably dead 💀`;
+      }
+      card.append(heading, detail);
+      statusBox.append(card);
+    } catch (error) {
+      // Keep the status area empty if the file is missing or temporarily unavailable.
+      console.warn("Status indicator:", error);
+      statusBox.replaceChildren();
+    }
+  }
+  updateStatus();
+</script>
+</body>
+</html>
