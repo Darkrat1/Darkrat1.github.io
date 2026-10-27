@@ -1,39 +1,34 @@
 
 /* SEASONAL THEMES */
 
-/* Spring — your existing mint and peach colours */
+/* Spring: fresh mint and green */
 body.seasonal-spring {
   background: linear-gradient(135deg, #a8e6cf, #dcedc1, #ffd3b6);
   color: #24352c;
 }
 
-/* Summer */
+body.seasonal-spring #settings-panel {
+  background: #ffffff;
+  color: #222222;
+}
+
+/* Summer: sunny yellow and blue */
 body.seasonal-summer {
   background: linear-gradient(135deg, #56ccf2, #f8e16c, #f2994a);
   color: #20251f;
 }
 
-/* Autumn */
+body.seasonal-summer #settings-panel {
+  background: #fffdf2;
+  color: #222222;
+}
+
+/* Autumn: burnt orange, brown and cream */
 body.seasonal-autumn {
   background: linear-gradient(135deg, #21150f, #63391f, #b76532);
   color: #fff0dc;
 }
 
-/* Winter */
-body.seasonal-winter {
-  background: linear-gradient(135deg, #101b30, #29445c, #8ba8bd);
-  color: #f2f7ff;
-}
-
-/* Smooth seasonal transitions */
-body.seasonal-spring,
-body.seasonal-summer,
-body.seasonal-autumn,
-body.seasonal-winter {
-  transition: background 0.5s, color 0.5s;
-}
-
-/* Optional: make the autumn clock feel warmer */
 body.seasonal-autumn #clock {
   text-shadow: 0 4px 20px rgba(20, 8, 0, 0.25);
 }
@@ -41,4 +36,46 @@ body.seasonal-autumn #clock {
 body.seasonal-autumn #settings-panel {
   background: #fff0dc;
   color: #382116;
+}
+
+/* Winter: midnight blue and icy blue */
+body.seasonal-winter {
+  background: linear-gradient(135deg, #101b30, #29445c, #8ba8bd);
+  color: #f2f7ff;
+}
+
+body.seasonal-winter #settings-panel {
+  background: #f2f7ff;
+  color: #18263b;
+}
+
+/* MANUAL LIGHT THEME */
+body.theme-light {
+  background: #ffffff;
+  color: #111111;
+}
+
+body.theme-light #settings-panel {
+  background: #ffffff;
+  color: #111111;
+}
+
+/* MANUAL DARK THEME */
+body.theme-dark {
+  background: #111111;
+  color: #ffffff;
+}
+
+body.theme-dark #settings-panel {
+  background: #1e1e1e;
+  color: #ffffff;
+}
+
+/* Smooth transitions */
+body {
+  transition: background 0.5s, color 0.5s;
+}
+
+#settings-panel {
+  transition: background 0.5s, color 0.5s;
 }
