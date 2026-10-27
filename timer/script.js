@@ -135,3 +135,37 @@ modeBtn.onclick = () => {
 
   timeEl.textContent = formatTime(timeMs);
 };
+// --------------------
+// Theme change
+// --------------------
+
+
+
+const themeToggle = document.getElementById("themeToggle");
+
+// Restore the last selected theme.
+if (localStorage.getItem("clockTheme") === "minimal") {
+  document.body.classList.add("minimal");
+}
+
+function updateThemeButton() {
+  themeToggle.textContent = document.body.classList.contains("minimal")
+    ? "Switch to Autumn"
+    : "Switch to B&W";
+}
+
+updateThemeButton();
+
+themeToggle.addEventListener("click", () => {
+  document.body.classList.toggle("minimal");
+
+  localStorage.setItem(
+    "clockTheme",
+    document.body.classList.contains("minimal")
+      ? "minimal"
+      : "autumn"
+  );
+
+  updateThemeButton();
+});
+
